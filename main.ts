@@ -1,24 +1,87 @@
-let starship = game.createSprite(2, 2)
+function setShip (x: number, y: number) {
+    if (!(starshipx == oldX && starshipy == oldy)) {
+        led.plotBrightness(oldX, oldy, ob2)
+        ob2 = led.pointBrightness(x, y)
+        led.plotBrightness(x, y, 255)
+        oldX = x
+        oldy = y
+    }
+}
+input.onButtonPressed(Button.A, function () {
+    music.play(music.tonePlayable(131, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
+    for (let index = 0; index <= 4 - starshipx; index++) {
+        led.plot(starshipx + index, starshipy)
+        basic.pause(100)
+    }
+    for (let index = 0; index <= 4 - starshipx; index++) {
+        led.unplot(starshipx + index, starshipy)
+        basic.pause(100)
+    }
+})
+joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P15, joystickbit.ButtonType.down, function () {
+    music.play(music.builtinPlayableSoundEffect(soundExpression.twinkle), music.PlaybackMode.UntilDone)
+    mkStars()
+    setShip(starshipx, starshipy)
+    led.plot(starshipx, starshipy)
+})
+input.onButtonPressed(Button.B, function () {
+    music.play(music.tonePlayable(131, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
+    for (let index = 0; index <= 4 - starshipy; index++) {
+        led.plot(starshipx, starshipy + index)
+        basic.pause(100)
+    }
+    for (let index = 0; index <= 4 - starshipy; index++) {
+        led.unplot(starshipx, starshipy + index)
+        basic.pause(100)
+    }
+})
+function mkStars () {
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        . . . . .
+        `)
+    for (let index = 0; index < 13; index++) {
+        led.plotBrightness(randint(0, 4), randint(0, 4), randint(15, 100))
+    }
+}
+joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P13, joystickbit.ButtonType.down, function () {
+	
+})
+joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P12, joystickbit.ButtonType.down, function () {
+    starshipx = 2
+    starshipy = 2
+    setShip(2, 2)
+})
+let ob2 = 0
+let oldy = 0
+let oldX = 0
+let starshipy = 0
+let starshipx = 0
+joystickbit.initJoystickBit()
+starshipx = 2
+starshipy = 2
+oldX = 2
+oldy = 2
+let oldBack = 0
+ob2 = 0
+mkStars()
+led.plotBrightness(starshipx, starshipy, 255)
 basic.forever(function () {
     if (600 < joystickbit.getRockerValue(joystickbit.rockerType.X)) {
-        starship.set(LedSpriteProperty.Direction, 0)
-        starship.move(1)
+        starshipx = (starshipx + 4) % 5
     }
     if (400 > joystickbit.getRockerValue(joystickbit.rockerType.X)) {
-        starship.set(LedSpriteProperty.Direction, 90)
-        starship.move(1)
-    }
-    if (600 < joystickbit.getRockerValue(joystickbit.rockerType.X)) {
-        starship.set(LedSpriteProperty.Direction, 270)
-        starship.move(1)
+        starshipx = (starshipx + 6) % 5
     }
     if (600 < joystickbit.getRockerValue(joystickbit.rockerType.Y)) {
-        starship.set(LedSpriteProperty.Direction, 180)
-        starship.move(1)
+        starshipy = (starshipy + 4) % 5
     }
     if (400 > joystickbit.getRockerValue(joystickbit.rockerType.Y)) {
-        starship.set(LedSpriteProperty.Direction, 180)
-        starship.move(1)
+        starshipy = (starshipy + 6) % 5
     }
+    setShip(starshipx, starshipy)
     basic.pause(100)
 })
