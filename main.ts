@@ -17,6 +17,7 @@ input.onButtonPressed(Button.A, function () {
         led.unplot(starshipx + index, starshipy)
         basic.pause(100)
     }
+    led.plot(starshipx, starshipy)
 })
 joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P15, joystickbit.ButtonType.down, function () {
     music.play(music.builtinPlayableSoundEffect(soundExpression.twinkle), music.PlaybackMode.UntilDone)
@@ -34,6 +35,7 @@ input.onButtonPressed(Button.B, function () {
         led.unplot(starshipx, starshipy + index)
         basic.pause(100)
     }
+    led.plot(starshipx, starshipy)
 })
 function mkStars () {
     basic.showLeds(`
@@ -47,9 +49,6 @@ function mkStars () {
         led.plotBrightness(randint(0, 4), randint(0, 4), randint(15, 100))
     }
 }
-joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P13, joystickbit.ButtonType.down, function () {
-	
-})
 joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P12, joystickbit.ButtonType.down, function () {
     starshipx = 2
     starshipy = 2
