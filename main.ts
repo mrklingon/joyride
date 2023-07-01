@@ -9,13 +9,18 @@ function setShip (x: number, y: number) {
 }
 input.onButtonPressed(Button.A, function () {
     music.play(music.tonePlayable(131, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
-    for (let index = 0; index <= 4 - starshipx; index++) {
-        led.plot(starshipx + index, starshipy)
+    oldBack = 0
+    start = starshipx
+    for (let index = 0; index < starshipx + 1; index++) {
+        led.plot(start, starshipy)
         basic.pause(100)
+        start += -1
     }
-    for (let index = 0; index <= 4 - starshipx; index++) {
-        led.unplot(starshipx + index, starshipy)
+    start = starshipx
+    for (let index = 0; index < starshipx + 1; index++) {
+        led.unplot(start, starshipy)
         basic.pause(100)
+        start += -1
     }
     led.plot(starshipx, starshipy)
 })
@@ -27,12 +32,13 @@ joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P15, joystickbit.ButtonType
 })
 input.onButtonPressed(Button.B, function () {
     music.play(music.tonePlayable(131, music.beat(BeatFraction.Quarter)), music.PlaybackMode.UntilDone)
-    for (let index = 0; index <= 4 - starshipy; index++) {
-        led.plot(starshipx, starshipy + index)
+    oldBack = 0
+    for (let index = 0; index <= 4 - starshipx; index++) {
+        led.plot(starshipx + index, starshipy)
         basic.pause(100)
     }
-    for (let index = 0; index <= 4 - starshipy; index++) {
-        led.unplot(starshipx, starshipy + index)
+    for (let index = 0; index <= 4 - starshipx; index++) {
+        led.unplot(starshipx + index, starshipy)
         basic.pause(100)
     }
     led.plot(starshipx, starshipy)
@@ -54,7 +60,9 @@ joystickbit.onButtonEvent(joystickbit.JoystickBitPin.P12, joystickbit.ButtonType
     starshipy = 2
     setShip(2, 2)
 })
+let start = 0
 let ob2 = 0
+let oldBack = 0
 let oldy = 0
 let oldX = 0
 let starshipy = 0
@@ -64,7 +72,7 @@ starshipx = 2
 starshipy = 2
 oldX = 2
 oldy = 2
-let oldBack = 0
+oldBack = 0
 ob2 = 0
 mkStars()
 led.plotBrightness(starshipx, starshipy, 255)
